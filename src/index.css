@@ -1,0 +1,46 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html { scroll-behavior: smooth; }
+  body {
+    @apply bg-canvas-100 text-char-100 antialiased;
+    background:
+      radial-gradient(1100px 500px at 100% -10%, rgba(15,118,110,0.08), transparent 60%),
+      radial-gradient(900px 500px at -10% 10%, rgba(249,112,87,0.06), transparent 60%),
+      #f7f5ef;
+  }
+  ::selection { @apply bg-teal2-500/25 text-char-200; }
+  h1, h2 { font-family: 'Fraunces', Georgia, serif; }
+}
+
+@layer components {
+  .container-tight { @apply max-w-6xl mx-auto px-6 md:px-10; }
+  .eyebrow {
+    @apply uppercase tracking-hair text-[11px] font-semibold text-teal2-500;
+  }
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 rounded-full
+      bg-teal2-500 text-canvas-50 font-semibold px-6 py-3.5 text-[14px]
+      transition hover:bg-teal2-400 hover:-translate-y-[1px]
+      active:translate-y-0 shadow-cta;
+  }
+  .btn-secondary {
+    @apply inline-flex items-center justify-center gap-2 rounded-full
+      border border-char-100/15 text-char-100 font-medium px-6 py-3.5 text-[14px]
+      hover:border-char-100/30 hover:bg-char-100/[.03] transition;
+  }
+  .card {
+    @apply bg-canvas-50 border border-char-100/[.08] rounded-2xl shadow-soft;
+  }
+  .input {
+    @apply w-full bg-canvas-50 border border-char-100/15 rounded-xl px-4 py-3
+      text-[15px] text-char-100 placeholder-slate3-400
+      focus:border-teal2-500 focus:ring-2 focus:ring-teal2-500/15 focus:outline-none transition;
+  }
+  .label { @apply block text-xs font-semibold tracking-wider uppercase text-slate3-500 mb-2; }
+  .divider {
+    @apply h-px w-full bg-gradient-to-r from-transparent via-char-100/15 to-transparent;
+  }
+}

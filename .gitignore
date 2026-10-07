@@ -1,0 +1,9 @@
+node_modules
+dist
+.vite
+.wrangler
+leads.json
+.env
+.env.local
+*.log
+.DS_Store
