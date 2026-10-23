@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 // Public brand (Sarah locked 2026-10-07). Appears on the site + the close-card
 // contact strip in every customer video.
@@ -35,25 +35,43 @@ function IconSpend() { return (
   </svg>
 );}
 
-const SERVICES = [
-  { k: "01", icon: IconAds, title: "Google Ads account audit",
-    body: "Every active campaign, ad group, and keyword goes under the microscope. We flag mismatched intent, wasted spend, and the gaps between what your ad promises and where it sends people." },
-  { k: "02", icon: IconLanding, title: "Landing-page experience review",
-    body: "The page a paid click lands on is the single biggest lever on return. We walk through yours like a real customer and tell you where visitors drop off — in plain English, not jargon." },
-  { k: "03", icon: IconTracking, title: "Conversion tracking check",
-    body: "If Google can't see which clicks become customers, it can't bid for the right ones. We verify what's being tracked, what isn't, and what that costs you per month." },
-  { k: "04", icon: IconMatch, title: "Message-match + ad copy",
-    body: "Your ad is a promise. We score how closely your landing page honours it — a mismatch is the fastest, cheapest leak most owner-run shops are paying for right now." },
-  { k: "05", icon: IconCall, title: "Call tracking + lead capture",
-    body: "Most trades, home services, and emergency businesses close over the phone. We check whether those calls are being counted, and whether your form is quietly turning leads away." },
-  { k: "06", icon: IconSpend, title: "Spend sanity-check",
-    body: "We estimate the range you're likely spending against the clicks you're buying, and whether that number is working for the leads it brings in." },
+// Two-tier service model (per Oct-7 brief): free outside-in audit covers only
+// what we can verify as a customer would see. Deeper account-level work needs
+// the owner to grant access. Every line here only names things visible without
+// logging in.
+const TIERS = [
+  {
+    k: "01",
+    tag: "Free · what every prospect gets",
+    title: "Outside-in audit",
+    access: "No access needed",
+    bullets: [
+      "Your ad itself — headlines, description, and what it's promising",
+      "The page the paid click lands on — hero, phone, form, trust signals",
+      "Message-match: does the page continue the ad's promise?",
+      "Externally visible tracking — call tracking + conversion tags we can detect",
+      "A spend-range estimate based on vertical + visible click volume",
+    ],
+  },
+  {
+    k: "02",
+    tag: "Paid engagement",
+    title: "Account-level audit",
+    access: "Owner grants access",
+    bullets: [
+      "Every active campaign, ad group, and keyword under the microscope",
+      "Search-term reports — what people actually typed before clicking",
+      "Conversion setup inside the account — what's firing, what's missing",
+      "Real cost per lead by campaign + weekly spend trend",
+      "Negative-keyword and bid-strategy opportunities",
+    ],
+  },
 ];
 
 const PROCESS = [
   { k: "01", title: "You submit a short request", body: "Business name, website, and roughly what you're advertising. That's enough for us to find your campaign and start digging in." },
   { k: "02", title: "We send you a walkthrough video", body: "Inside three business days, you get a short video of us clicking your ad, walking through your landing page, and showing you exactly where money's leaking. Specific, plain English, no fluff." },
-  { k: "03", title: "If it's worth 15 minutes, book a call", body: "No pressure, no auto-pitch. If what you see makes sense and you want help tightening the campaign, book a call. If not, we close the file quietly." },
+  { k: "03", title: "If it's worth 15 minutes, book a call", body: "No pressure, no auto-pitch. If what you see makes sense, pick a time that works — otherwise we close the file quietly.", bookingHref: "mailto:admin@clickmetric.ca?subject=Book%20a%20clickmetric%20call" },
 ];
 
 const STATS = [
@@ -64,21 +82,53 @@ const STATS = [
 ];
 
 function Nav() {
+  // Mobile equivalent of the "cmadmin" keyboard shortcut: tap the CM square 5
+  // times within 3 seconds to drop the activator cookie and jump to /app/.
+  const tapsRef = React.useRef([]);
+  const onLogoTap = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    const now = Date.now();
+    const recent = tapsRef.current.filter((t) => now - t < 3000);
+    recent.push(now);
+    tapsRef.current = recent;
+    if (recent.length >= 5) {
+      tapsRef.current = [];
+      document.cookie = "__cmw=1; Path=/; Max-Age=86400; SameSite=Lax";
+      window.location.href = "/app/";
+    } else {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  };
   return (
     <header className="container-tight pt-7 flex items-center justify-between relative z-10">
-      <a href="#top" className="flex items-center gap-3 group">
-        <span className="w-9 h-9 rounded-xl bg-char-200 text-canvas-50 grid place-items-center font-black">
+      <div className="flex items-center gap-3">
+        <button
+          type="button"
+          onClick={onLogoTap}
+          aria-label="ClickMetric"
+          style={{ touchAction: "manipulation" }}
+          className="w-9 h-9 rounded-xl bg-char-200 text-canvas-50 grid place-items-center font-black select-none cursor-pointer"
+        >
           <span className="font-display text-sm -mt-[1px]">CM</span>
-        </span>
-        <span className="font-semibold tracking-tight text-char-100 text-[16px]">{BRAND}</span>
-      </a>
+        </button>
+        <a href="#top" className="font-semibold tracking-tight text-char-100 text-[16px]">{BRAND}</a>
+      </div>
       <nav className="hidden md:flex items-center gap-9 text-sm text-slate3-500">
         <a href="#services" className="hover:text-char-100 transition">Services</a>
         <a href="#process" className="hover:text-char-100 transition">How it works</a>
         <a href="#why" className="hover:text-char-100 transition">Why us</a>
         <a href="#request" className="hover:text-char-100 transition">Request audit</a>
       </nav>
-      <a href="#request" className="btn-primary text-[13px] px-5 py-2.5">Request a free audit</a>
+      <div className="flex items-center gap-2">
+        <a href="mailto:admin@clickmetric.ca" className="hidden md:inline-flex items-center justify-center gap-1.5 rounded-full border border-char-100/15 text-char-100 font-medium px-4 py-2.5 text-[13px] hover:border-teal2-500 hover:text-teal2-600 transition">
+          <MailIcon /> Email us
+        </a>
+        <a href="tel:+16047981765" className="hidden sm:inline-flex items-center justify-center gap-1.5 rounded-full border border-char-100/15 text-char-100 font-medium px-4 py-2.5 text-[13px] hover:border-teal2-500 hover:text-teal2-600 transition">
+          <PhoneIcon /> (604) 798-1765
+        </a>
+        <a href="#request" className="btn-primary text-[13px] px-5 py-2.5">Request a free audit</a>
+      </div>
     </header>
   );
 }
@@ -197,10 +247,17 @@ function AuditForm({ compact }) {
     return (
       <div className="rounded-2xl bg-canvas-50 border border-teal2-500/40 shadow-card p-7 md:p-9 text-char-100">
         <div className="eyebrow mb-2">Request received</div>
-        <h3 className="font-display text-2xl font-semibold mb-3">We're on it.</h3>
+        <h3 className="font-display text-2xl font-semibold mb-3">Got it.</h3>
         <p className="text-slate3-500 leading-relaxed text-[15px]">
-          You'll have a walkthrough video within three business days. If anything else would help us run a better audit, just reply to the confirmation email.
+          You'll hear from us within one business day with a confirmation, and your walkthrough video arrives within three business days. If anything would help us run a better audit, just reply to the confirmation email.
         </p>
+        <button
+          type="button"
+          onClick={() => setStatus({ sending: false, ok: false, error: "" })}
+          className="mt-6 inline-flex items-center gap-2 text-sm font-medium text-teal2-600 hover:text-teal2-500 transition"
+        >
+          Submit another request <ArrowIcon />
+        </button>
       </div>
     );
   }
@@ -305,30 +362,45 @@ function Services() {
         <div className="max-w-2xl mb-14">
           <div className="eyebrow mb-4">What we audit</div>
           <h2 className="text-4xl md:text-5xl font-semibold tracking-[-0.015em] leading-[1.05] text-char-200">
-            Six categories. One short video. No runaround.
+            Two ways we audit — one is free.
           </h2>
           <p className="mt-5 text-slate3-500 leading-relaxed text-[16px]">
-            A real audit, not a sales deck. We walk through what Google and a customer actually see — and tell you where money's going and where it isn't.
+            The free audit covers everything a real customer sees from the outside — your ad, your landing page, the tracking visible to any visitor. If you want us to go deeper into the account itself, that's a separate engagement.
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
-          {SERVICES.map((s) => {
-            const Icon = s.icon;
-            return (
-              <article key={s.k} className="card p-7 hover:border-teal2-500/40 hover:-translate-y-[2px] transition group">
-                <div className="flex items-center justify-between mb-5">
-                  <div className="w-11 h-11 rounded-xl bg-teal2-500/[.08] text-teal2-500 grid place-items-center group-hover:bg-teal2-500 group-hover:text-canvas-50 transition">
-                    <span className="w-6 h-6 block"><Icon /></span>
-                  </div>
-                  <span className="font-mono text-slate3-400 font-semibold text-xs tracking-wider">{s.k}</span>
+        <div className="grid md:grid-cols-2 gap-5">
+          {TIERS.map((t, idx) => (
+            <article key={t.k} className={`card p-8 relative ${idx === 0 ? "border-teal2-500/40 shadow-[0_1px_0_rgba(26,26,28,.03),0_20px_50px_-24px_rgba(15,118,110,.18)]" : ""}`}>
+              {idx === 0 && (
+                <div className="absolute -top-3 left-6 bg-teal2-500 text-canvas-50 text-[10px] font-bold tracking-[0.18em] uppercase px-3 py-1 rounded-full">
+                  Starts here
                 </div>
-                <h3 className="font-display text-xl font-semibold text-char-200 mb-3 leading-snug">{s.title}</h3>
-                <p className="text-slate3-500 text-[15px] leading-relaxed">{s.body}</p>
-              </article>
-            );
-          })}
+              )}
+              <div className="flex items-center justify-between mb-5">
+                <span className="font-mono text-teal2-500 font-semibold text-xs tracking-wider">{t.k}</span>
+                <span className="text-[11px] font-semibold tracking-[0.14em] uppercase text-slate3-500">{t.tag}</span>
+              </div>
+              <h3 className="font-display text-2xl font-semibold text-char-200 mb-2 leading-snug">{t.title}</h3>
+              <div className="inline-flex items-center gap-2 text-[12px] font-medium text-slate3-500 bg-canvas-100 border border-char-100/[.08] rounded-full px-3 py-1 mb-5">
+                <span className={`w-1.5 h-1.5 rounded-full ${idx === 0 ? "bg-teal2-500" : "bg-coral-500"}`} />
+                {t.access}
+              </div>
+              <ul className="space-y-3 text-[15px] text-slate3-600 leading-snug">
+                {t.bullets.map((b, bi) => (
+                  <li key={bi} className="flex items-start gap-3">
+                    <CheckDot />
+                    <span className="text-char-100/90">{b}</span>
+                  </li>
+                ))}
+              </ul>
+            </article>
+          ))}
         </div>
+
+        <p className="mt-10 text-center text-sm text-slate3-500 max-w-xl mx-auto leading-relaxed">
+          Every line above is something a customer or a verifier could confirm — we don't claim access to what we can't see.
+        </p>
       </div>
     </section>
   );
@@ -356,6 +428,11 @@ function Process() {
             </div>
             <h3 className="font-display text-xl font-semibold text-char-200 mb-3">{p.title}</h3>
             <p className="text-slate3-500 text-[15px] leading-relaxed">{p.body}</p>
+            {p.bookingHref && (
+              <a href={p.bookingHref} className="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-teal2-600 hover:text-teal2-500 transition">
+                Book a 15-minute call <ArrowIcon />
+              </a>
+            )}
           </div>
         ))}
       </div>
@@ -379,13 +456,15 @@ function Why() {
               Most paid-search providers charge a monthly retainer and get on with the work. That's fine — until you want to know whether the work is actually earning its keep.
             </p>
             <p>
-              <span className="text-char-100 font-medium">We're the second set of eyes.</span> We watch what the real search experience looks like for a paying customer, and we tell you specifically where it loses them.
+              <span className="text-char-100 font-medium">We're the second set of eyes.</span> We watch what the real search experience looks like for a paying customer, and we flag — in plain English — where it loses them.
             </p>
             <p>
-              If what we find is useful, we fix it with you. The whole point is you end up as the owner with the information — not someone being told what to think.
+              If what we find is useful and you want to tighten it with us, that's a short follow-up conversation. The video is deliberately not a full fix list — it's enough to tell you whether a conversation is worth your fifteen minutes.
             </p>
             <div className="pt-3 flex flex-wrap gap-3">
               <a href="#request" className="btn-primary">Request a free audit <ArrowIcon /></a>
+              <a href="tel:+16047981765" className="btn-secondary"><PhoneIcon /> Call (604) 798-1765</a>
+              <a href="mailto:admin@clickmetric.ca" className="btn-secondary"><MailIcon /> Email admin@clickmetric.ca</a>
             </div>
           </div>
         </div>
@@ -394,23 +473,175 @@ function Why() {
   );
 }
 
-function Footer() {
+const FAQ = [
+  { q: "Why is the audit free?", a: "The video is how we show what we do. If it's useful and you want help, we can talk. If not, we close the file and that's it." },
+  { q: "What do you need from me?", a: "Your website or ad URL and an email address. That's enough for us to find your ad and the page it sends people to." },
+  { q: "Do you need access to my Google Ads account?", a: "Not for the free video. It's based on what's visible from the outside: your ad, your landing page, and your site. A deeper review of campaigns, search terms, and conversion settings is only possible if you choose to give us access later." },
+  { q: "What happens after I get the video?", a: "You decide. If it's worth 15 minutes, book a call. Nothing is sold automatically and nobody chases you." },
+  { q: "What do you do with my information?", a: "We use your details only to send your audit video and follow up on it. We cap the form at two requests per email so no one gets spammed. Nothing is sold or shared." },
+];
+
+function FAQSection() {
   return (
-    <footer className="container-tight pb-14 pt-12">
-      <div className="divider mb-10" />
-      <div className="flex flex-col md:flex-row gap-6 md:items-center md:justify-between">
-        <div className="flex items-center gap-3">
-          <span className="w-8 h-8 rounded-lg bg-char-200 text-canvas-50 grid place-items-center font-black">
-            <span className="font-display text-sm">CM</span>
-          </span>
-          <span className="text-char-100 font-semibold tracking-tight">{BRAND}</span>
-          <span className="text-slate3-400 text-sm ml-2 hidden md:inline">— Independent paid-search review</span>
-        </div>
-        <div className="text-slate3-400 text-xs tracking-wider uppercase">
-          © {new Date().getFullYear()} · All rights reserved
+    <section id="faq" className="container-tight py-24 relative">
+      <div className="max-w-2xl mb-10">
+        <div className="eyebrow mb-4">Common questions</div>
+        <h2 className="text-4xl md:text-5xl font-semibold tracking-[-0.015em] leading-[1.05] text-char-200">
+          Straight answers before you ask.
+        </h2>
+      </div>
+      <div className="max-w-3xl space-y-3">
+        {FAQ.map((item, i) => (
+          <details key={i} className="group card p-6 open:border-teal2-500/40 transition">
+            <summary className="flex items-start justify-between gap-6 cursor-pointer list-none">
+              <h3 className="font-display text-[18px] font-semibold text-char-200 leading-snug">{item.q}</h3>
+              <span className="flex-shrink-0 mt-1 w-6 h-6 rounded-full border border-char-100/15 grid place-items-center text-char-100 group-open:rotate-45 group-open:border-teal2-500 group-open:text-teal2-500 transition">
+                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><path d="M12 5v14M5 12h14"/></svg>
+              </span>
+            </summary>
+            <p className="mt-4 text-slate3-600 text-[15px] leading-relaxed">{item.a}</p>
+          </details>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+function AboutSection() {
+  return (
+    <section id="about" className="relative py-24 bg-canvas-50 border-y border-char-100/[.07]">
+      <div className="container-tight max-w-3xl">
+        <div className="eyebrow mb-4">Who's behind ClickMetric</div>
+        <h2 className="font-display text-4xl md:text-5xl font-semibold tracking-[-0.015em] leading-[1.05] text-char-200 mb-6">
+          Operators, not an agency.
+        </h2>
+        <div className="space-y-5 text-[16px] text-slate3-600 leading-relaxed">
+          <p>
+            ClickMetric is run by <span className="text-char-100 font-medium">Tyler Davis</span> in <span className="text-char-100 font-medium">British Columbia</span>. We've been building websites since 2005 and managing paid-ad campaigns for small businesses alongside running several of our own — so we know what it costs when ad spend doesn't turn into phone calls.
+          </p>
+          <p>
+            The service started because we kept seeing good businesses pay for paid-search campaigns that nobody — the owner included — had actually looked at from a customer's point of view. The free walkthrough is our way of pointing at the gap. Fixing it, if you want help, is the paid conversation that follows.
+          </p>
+          <p className="text-char-100">
+            Questions you'd rather not type into a form? <a className="text-teal2-600 hover:text-teal2-500 transition font-medium" href="mailto:admin@clickmetric.ca">admin@clickmetric.ca</a>.
+          </p>
         </div>
       </div>
+    </section>
+  );
+}
+
+function PrivacyPage() {
+  return (
+    <div className="relative min-h-screen">
+      <header className="container-tight pt-7 flex items-center justify-between">
+        <a href="#" onClick={(e) => { e.preventDefault(); window.location.hash = ""; }} className="flex items-center gap-3">
+          <span className="w-9 h-9 rounded-xl bg-char-200 text-canvas-50 grid place-items-center font-black">
+            <span className="font-display text-sm -mt-[1px]">CM</span>
+          </span>
+          <span className="font-semibold tracking-tight text-char-100 text-[16px]">{BRAND}</span>
+        </a>
+        <a href="#" onClick={(e) => { e.preventDefault(); window.location.hash = ""; }} className="text-sm text-slate3-500 hover:text-char-100 transition">← Back to home</a>
+      </header>
+      <main className="container-tight max-w-3xl py-16">
+        <div className="eyebrow mb-4">Privacy policy</div>
+        <h1 className="font-display text-4xl md:text-5xl font-semibold tracking-[-0.015em] leading-[1.05] text-char-200 mb-6">Privacy Policy</h1>
+        <div className="rounded-xl bg-coral-500/[.08] border border-coral-500/30 p-5 mb-10 text-[14px] text-ember2-600">
+          <strong>DRAFT — not legal advice.</strong> This page is a scaffold based on common Canadian privacy practice (PIPEDA). Have the final text reviewed by a Canadian privacy lawyer before relying on it. Replace every <code className="font-mono text-[13px]">[TODO]</code> below.
+        </div>
+        <div className="space-y-8 text-[16px] text-slate3-600 leading-relaxed">
+          <section>
+            <h2 className="font-display text-2xl font-semibold text-char-200 mb-3">Who we are</h2>
+            <p>ClickMetric is operated by Tyler Davis in British Columbia, Canada. Contact: <a href="mailto:admin@clickmetric.ca" className="text-teal2-600 hover:text-teal2-500">admin@clickmetric.ca</a> · (604) 798-1765.</p>
+          </section>
+          <section>
+            <h2 className="font-display text-2xl font-semibold text-char-200 mb-3">What we collect</h2>
+            <p>The audit-request form on clickmetric.ca collects: your name, business name, website / ad URL, email address, and any notes you provide. Submissions are limited to two per email address.</p>
+            <p className="mt-2">We also keep basic request logs (IP address, user agent) for the submission for abuse prevention.</p>
+          </section>
+          <section>
+            <h2 className="font-display text-2xl font-semibold text-char-200 mb-3">How we use it</h2>
+            <p>We use the information you submit to produce your audit video and follow up on it with you directly. We do not sell, rent, or share your details with third parties. We do not add you to a general mailing list.</p>
+          </section>
+          <section>
+            <h2 className="font-display text-2xl font-semibold text-char-200 mb-3">How long we keep it</h2>
+            <p>We retain audit requests for <strong>[TODO: 12 months]</strong> after the audit is delivered unless you ask us to delete it sooner. Email us at admin@clickmetric.ca to request deletion.</p>
+          </section>
+          <section>
+            <h2 className="font-display text-2xl font-semibold text-char-200 mb-3">Analytics</h2>
+            <p>We use <strong>[TODO: Cloudflare Web Analytics / none configured yet]</strong> to measure anonymous page visits. No personally identifying tracking cookies are used.</p>
+          </section>
+          <section>
+            <h2 className="font-display text-2xl font-semibold text-char-200 mb-3">Your rights</h2>
+            <p>Under Canadian privacy law (PIPEDA + applicable provincial law) you can request access to the information we hold about you, correction of any inaccuracies, or deletion. Email admin@clickmetric.ca and we'll respond within 30 days.</p>
+          </section>
+          <section>
+            <h2 className="font-display text-2xl font-semibold text-char-200 mb-3">Updates</h2>
+            <p>If this policy changes materially we'll update the date below and, where appropriate, email anyone with a live audit on file.</p>
+            <p className="text-slate3-400 text-sm mt-4">Last updated: [TODO: before shipping]</p>
+          </section>
+        </div>
+      </main>
+      <Footer />
+    </div>
+  );
+}
+
+function Footer() {
+  const year = new Date().getFullYear();
+  return (
+    <footer className="container-tight pt-14 pb-10">
+      <div className="divider mb-10" />
+      <div className="grid md:grid-cols-3 gap-8 text-[14px] text-slate3-600 leading-relaxed">
+        <div>
+          <div className="flex items-center gap-3 mb-3">
+            <span className="w-8 h-8 rounded-lg bg-char-200 text-canvas-50 grid place-items-center font-black">
+              <span className="font-display text-sm">CM</span>
+            </span>
+            <span className="text-char-100 font-semibold tracking-tight">{BRAND}</span>
+          </div>
+          <p className="text-slate3-500 text-[13px] max-w-xs">
+            Independent paid-search audits for owner-run businesses in BC.
+          </p>
+        </div>
+        <div>
+          <div className="eyebrow mb-3 text-char-100/60">Contact</div>
+          <div className="space-y-1.5">
+            <div><a href="mailto:admin@clickmetric.ca" className="hover:text-teal2-600 transition">admin@clickmetric.ca</a></div>
+            <div><a href="tel:+16047981765" className="hover:text-teal2-600 transition">(604) 798-1765</a></div>
+            <div><a href="https://clickmetric.ca" className="hover:text-teal2-600 transition">clickmetric.ca</a></div>
+          </div>
+        </div>
+        <div>
+          <div className="eyebrow mb-3 text-char-100/60">Business</div>
+          <div className="space-y-1.5 text-slate3-500 text-[13px]">
+            <div><span className="text-char-100/80">ClickMetric</span></div>
+            <div>British Columbia, Canada</div>
+            <div className="pt-1"><a href="#/privacy" className="hover:text-teal2-600 transition">Privacy Policy</a></div>
+          </div>
+        </div>
+      </div>
+      <div className="divider mt-10 mb-5" />
+      <div className="text-slate3-400 text-xs tracking-wider uppercase text-center">
+        © {year} ClickMetric · All rights reserved
+      </div>
     </footer>
+  );
+}
+
+function MailIcon() {
+  return (
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+      <rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 7l-10 6L2 7"/>
+    </svg>
+  );
+}
+
+function PhoneIcon() {
+  return (
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+      <path d="M22 16.92v3a2 2 0 01-2.18 2 19.86 19.86 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.86 19.86 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/>
+    </svg>
   );
 }
 
@@ -434,6 +665,35 @@ function CheckDot() {
 }
 
 export default function App() {
+  // Simple hash-based route for /privacy — anything else renders the main site.
+  const [path, setPath] = React.useState(typeof window !== "undefined" ? window.location.hash : "");
+  React.useEffect(() => {
+    const h = () => setPath(window.location.hash);
+    window.addEventListener("hashchange", h);
+    return () => window.removeEventListener("hashchange", h);
+  }, []);
+
+  // Hidden admin activator — type "cmadmin" anywhere on the page to drop a
+  // cookie and jump to /app. Not linked anywhere else; invisible to normal
+  // visitors. Real auth sits on top via Cloudflare Access.
+  React.useEffect(() => {
+    const SEQ = "cmadmin";
+    let buffer = "";
+    const onKey = (e) => {
+      if (e.target && /INPUT|TEXTAREA|SELECT/.test(e.target.tagName)) return;
+      if (!/^[a-z]$/i.test(e.key)) { buffer = ""; return; }
+      buffer = (buffer + e.key.toLowerCase()).slice(-SEQ.length);
+      if (buffer === SEQ) {
+        // Max-age 24h, HttpOnly can't be set from JS; this is just the gate
+        // (CF Access provides real auth on top).
+        document.cookie = "__cmw=1; Path=/; Max-Age=86400; SameSite=Lax";
+        window.location.href = "/app/";
+      }
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, []);
+  if (path.startsWith("#/privacy")) return <PrivacyPage />;
   return (
     <div className="relative min-h-screen">
       <Nav />
@@ -441,6 +701,8 @@ export default function App() {
       <Services />
       <Process />
       <Why />
+      <FAQSection />
+      <AboutSection />
       <Footer />
     </div>
   );
