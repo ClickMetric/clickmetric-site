@@ -1,0 +1,16 @@
+{
+  "source": "serpapi_google_ads",
+  "name": "1 Hour Response Time",
+  "domain": "gatorplumbing.ca",
+  "ad_title": "1 Hour Response Time | Same Day Appointment Available",
+  "ad_description": "24/7 fast response for leaks, bad drains and burst pipe, toilet overflows issues. Call now. Available 24/7 to handle urgent repairs, including leaks, clogged drains, and water damage. Book A Plumber.",
+  "ad_position": 4,
+  "displayed_link": "https://www.gatorplumbing.ca",
+  "landing_link": "https://www.gatorplumbing.ca/",
+  "serpapi_search_id": "6ad8dfbf9ae4911fd9496b1e",
+  "serpapi_query": "vancouver bc emergency plumbers",
+  "serpapi_location": "Vancouver,British Columbia,Canada",
+  "serpapi_gl": "ca",
+  "serpapi_captured_at": "2026-10-21T15:52:33Z",
+  "serpapi_evidence_path": "briefs/discovery_serpapi/brf_1a15f29fabc/r1/serpapi_02_6ad8dfbf9ae4911fd9496b1e.json"
+}

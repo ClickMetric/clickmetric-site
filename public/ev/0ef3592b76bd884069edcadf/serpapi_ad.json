@@ -1,0 +1,16 @@
+{
+  "source": "serpapi_google_ads",
+  "name": "Vancouver's Top-Rated Dentist",
+  "domain": "vancouverdentistbc.ca",
+  "ad_title": "Vancouver's Top-Rated Dentist - 5-Star Rated by 300+ Patients",
+  "ad_description": "Top-rated Vancouver dentist. Modern tools, friendly care. Schedule now Read more",
+  "ad_position": 1,
+  "displayed_link": "https://www.vancouverdentistbc.ca \u203a dentist \u203a near_me",
+  "landing_link": "https://vancouverdentistbc.ca/",
+  "serpapi_search_id": "6ad78ba4dea400377f7076fa",
+  "serpapi_query": "best dentist vancouver bc",
+  "serpapi_location": "Vancouver,British Columbia,Canada",
+  "serpapi_gl": "ca",
+  "serpapi_captured_at": "2026-10-20T15:41:25Z",
+  "serpapi_evidence_path": "briefs/discovery_serpapi/brf_cmw_30x_1792508762_04171f/r1/serpapi_08_6ad78ba4dea400377f7076fa.json"
+}

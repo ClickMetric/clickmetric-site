@@ -1,0 +1,16 @@
+{
+  "source": "serpapi_google_ads",
+  "name": "24-Hour Emergency Service",
+  "domain": "milani.ca",
+  "ad_title": "24-Hour Emergency Service - We are open and ready to serve",
+  "ad_description": "Fully Licensed, Insured and Bonded Technicians Available 24 Hours a Day, 7 Days a Week. Voted #1 Heating & Plumbing Company. Call Our A/C Technicians Today! Free Estimates.",
+  "ad_position": 4,
+  "displayed_link": "https://www.milani.ca \u203a ac \u203a service",
+  "landing_link": "https://www.milani.ca/service/heating",
+  "serpapi_search_id": "6adaf0bed12e2ecf00d0c360",
+  "serpapi_query": "24 hour hvac burnaby bc",
+  "serpapi_location": "Burnaby,British Columbia,Canada",
+  "serpapi_gl": "ca",
+  "serpapi_captured_at": "2026-10-23T05:29:35Z",
+  "serpapi_evidence_path": "briefs/discovery_serpapi/brf_34fb59a68ba0/r1/serpapi_04_6adaf0bed12e2ecf00d0c360.json"
+}

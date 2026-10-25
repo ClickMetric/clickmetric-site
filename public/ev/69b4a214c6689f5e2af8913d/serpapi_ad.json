@@ -1,0 +1,16 @@
+{
+  "source": "serpapi_google_ads",
+  "name": "Expert plumbers",
+  "domain": "604goodguy.com",
+  "ad_title": "Expert plumbers",
+  "ad_description": "Good Guys Plumbing \u2014 Our experienced plumbers will clean your drains quickly. Upfront pricing.",
+  "ad_position": 3,
+  "displayed_link": "http://www.604goodguy.com \u203a drain-cleaning \u203a metro-vancouver",
+  "landing_link": "https://604goodguy.com/drain-cleaning.html",
+  "serpapi_search_id": "6ad8dfbd0f830d3ad434499f",
+  "serpapi_query": "emergency plumbers vancouver bc",
+  "serpapi_location": "Vancouver,British Columbia,Canada",
+  "serpapi_gl": "ca",
+  "serpapi_captured_at": "2026-10-21T15:52:30Z",
+  "serpapi_evidence_path": "briefs/discovery_serpapi/brf_1a15f29fabc/r1/serpapi_01_6ad8dfbd0f830d3ad434499f.json"
+}

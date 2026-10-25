@@ -1,0 +1,16 @@
+{
+  "source": "serpapi_google_ads",
+  "name": "Vancouver Accountants",
+  "domain": "ap-accounting.ca",
+  "ad_title": "Vancouver Accountants | Trusted Vancouver CPA",
+  "ad_description": "",
+  "ad_position": 1,
+  "displayed_link": "https://www.ap-accounting.ca",
+  "landing_link": "https://ap-accounting.ca/",
+  "serpapi_search_id": "6ad7975ae3e17631bb5e084e",
+  "serpapi_query": "best accountant vancouver bc",
+  "serpapi_location": "Vancouver,British Columbia,Canada",
+  "serpapi_gl": "ca",
+  "serpapi_captured_at": "2026-10-20T16:31:24Z",
+  "serpapi_evidence_path": "briefs/discovery_serpapi/brf_cmw_30x_1792508762_0b3340/r1/serpapi_06_6ad7975ae3e17631bb5e084e.json"
+}

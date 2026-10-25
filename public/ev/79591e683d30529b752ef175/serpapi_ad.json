@@ -1,0 +1,16 @@
+{
+  "source": "serpapi_google_ads",
+  "name": "Orbit Accountants",
+  "domain": "orbitaccountants.ca",
+  "ad_title": "Orbit Accountants | Fixed Pricing \u2014 No Surprises",
+  "ad_description": "Small business accounting made simple. Fixed pricing, CRA-compliant & on-time books. Outsource accounting to Orbit. Accurate financials, monthly reports ...",
+  "ad_position": 1,
+  "displayed_link": "https://www.orbitaccountants.ca",
+  "landing_link": "https://orbitaccountants.ca/accounting-bookkeeping-services/",
+  "serpapi_search_id": "6ad79751bcd9274350a76eb2",
+  "serpapi_query": "small business accountant vancouver bc",
+  "serpapi_location": "Vancouver,British Columbia,Canada",
+  "serpapi_gl": "ca",
+  "serpapi_captured_at": "2026-10-20T16:31:15Z",
+  "serpapi_evidence_path": "briefs/discovery_serpapi/brf_cmw_30x_1792508762_0b3340/r1/serpapi_03_6ad79751bcd9274350a76eb2.json"
+}

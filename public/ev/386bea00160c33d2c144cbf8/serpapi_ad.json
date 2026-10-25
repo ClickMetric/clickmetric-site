@@ -1,0 +1,16 @@
+{
+  "source": "serpapi_google_ads",
+  "name": "HVAC Contractor",
+  "domain": "whytemechanical.ca",
+  "ad_title": "HVAC Contractor - Honest HVAC Pricing, Always",
+  "ad_description": "",
+  "ad_position": 1,
+  "displayed_link": "https://www.whytemechanical.ca",
+  "landing_link": "https://www.whytemechanical.ca/heat-pump-installers-vancouver",
+  "serpapi_search_id": "6adaf131412f436f3ab8a850",
+  "serpapi_query": "best hvac burnaby bc",
+  "serpapi_location": "Burnaby,British Columbia,Canada",
+  "serpapi_gl": "ca",
+  "serpapi_captured_at": "2026-10-23T05:31:30Z",
+  "serpapi_evidence_path": "briefs/discovery_serpapi/brf_34fb59a68ba0/r1/serpapi_08_6adaf131412f436f3ab8a850.json"
+}

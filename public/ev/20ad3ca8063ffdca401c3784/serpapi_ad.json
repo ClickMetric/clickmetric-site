@@ -1,0 +1,16 @@
+{
+  "source": "serpapi_google_ads",
+  "name": "Emergency Dentist, Vancouver",
+  "domain": "vandental.ca",
+  "ad_title": "Emergency Dentist, Vancouver - Walk-In Dental Care Now",
+  "ad_description": "",
+  "ad_position": 2,
+  "displayed_link": "https://www.vandental.ca \u203a emergency \u203a dentist",
+  "landing_link": "https://vandental.ca/our-services/general-dentistry/emergency-dentist/",
+  "serpapi_search_id": "6ad78b9a7e7028de8577ceb0",
+  "serpapi_query": "24 hour dentist vancouver bc",
+  "serpapi_location": "Vancouver,British Columbia,Canada",
+  "serpapi_gl": "ca",
+  "serpapi_captured_at": "2026-10-20T15:41:16Z",
+  "serpapi_evidence_path": "briefs/discovery_serpapi/brf_cmw_30x_1792508762_04171f/r1/serpapi_04_6ad78b9a7e7028de8577ceb0.json"
+}
