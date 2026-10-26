@@ -26,9 +26,13 @@ export async function onRequestGet({ params, env, request }) {
     return new Response("kv error", { status: 502 });
   }
   // Not a known prospect slug — fall through to ASSETS (may be another
-  // legitimate static file) rather than hard-404ing.
+  // legitimate static file) rather than hard-404ing. Wrap the response so
+  // Cache-Control: no-store prevents edge caching the miss state.
   if (!record || !record.watch_url) {
-    return env.ASSETS.fetch(request);
+    const r = await env.ASSETS.fetch(request);
+    const h = new Headers(r.headers);
+    h.set("Cache-Control", "no-store");
+    return new Response(r.body, { status: r.status, headers: h });
   }
 
   // watch_url example: https://clickmetric.ca/w/<token>
