@@ -9,14 +9,14 @@
 // Prospect record `watch_url` is `https://clickmetric.ca/w/<token>`; we pull
 // the trailing path segment as the token and redirect to the hash-named mp4.
 
-export async function onRequestGet({ params, env }) {
+export async function onRequestGet({ params, env, request }) {
   const slug = (params.slug || "").toLowerCase().trim();
   if (!slug) return new Response("not found", { status: 404 });
 
-  // Short-circuit: a hash-looking slug (24-char hex) means the static file
-  // should have handled it; a miss here is a true 404, not a slug lookup.
+  // Hash-named slugs (24-char hex) are stored as static assets under
+  // public/v/<hash>.mp4. Pass through to ASSETS so static serves them.
   if (/^[a-f0-9]{24}$/.test(slug)) {
-    return new Response("not found", { status: 404 });
+    return env.ASSETS.fetch(request);
   }
 
   let record;
@@ -25,8 +25,10 @@ export async function onRequestGet({ params, env }) {
   } catch (e) {
     return new Response("kv error", { status: 502 });
   }
+  // Not a known prospect slug — fall through to ASSETS (may be another
+  // legitimate static file) rather than hard-404ing.
   if (!record || !record.watch_url) {
-    return new Response("not found", { status: 404 });
+    return env.ASSETS.fetch(request);
   }
 
   // watch_url example: https://clickmetric.ca/w/<token>
